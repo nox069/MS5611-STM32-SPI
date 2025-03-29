@@ -42,52 +42,54 @@ A lightweight driver for the MS5611 barometric pressure and temperature sensor, 
    
 ## Usage
 1. Initialize the Sensor:
-   
+   ```c
    MS5611 sensor;
-SPI_HandleTypeDef hspi2; 
-
-  int main(void) 
-  {
-    // STM32 HAL initialization here
-    ms5611_init(&sensor, &hspi2, GPIOA, GPIO_PIN_4); // SPI, CS Port, CS Pin
-  }
+   SPI_HandleTypeDef hspi2; 
+     int main(void) 
+     {
+       // STM32 HAL initialization here
+       ms5611_init(&sensor, &hspi2, GPIOA, GPIO_PIN_4); // SPI, CS Port, CS Pin
+     }
 
 2. Read Data:
-
-     // Read with OSR_4096 (9.1ms conversion time)
-  get_pressure_temperature(&sensor, OSR_4096);
-  
-  // Access results
-  float temperature = sensor.temperature; // °C
-  float pressure = sensor.pressure;       // Pa
+    ```c  
+        // Read with OSR_4096 (9.1ms conversion time)
+     get_pressure_temperature(&sensor, OSR_4096);
+     
+     // Access results
+     float temperature = sensor.temperature; // °C
+     float pressure = sensor.pressure;       // Pa
 
 ## Example Code:
 
 #include "ms5611.h"
 MS5611 sensor;
-
-int main(void) 
-  {
-      HAL_Init();
-      SystemClock_Config();
-      MX_SPI2_Init(); // Your SPI init function
-    
-      ms5611_init(&sensor, &hspi2, GPIOA, GPIO_PIN_4);
-  
-      while (1) 
-      {
-        get_pressure_temperature(&sensor, OSR_4096);
-        printf("Temp: %.2f°C\tPressure: %.2f mBar\n", sensor.temperature, sensor.pressure);
-        HAL_Delay(1000);
-      }
-  }
+      ```c
+      
+                        #include "ms5611.h"
+                        MS5611 sensor;      
+                        int main(void) {
+                        HAL_Init();
+                        SystemClock_Config();
+                        MX_SPI2_Init(); // Your SPI init function
+                     
+                       ms5611_init(&sensor, &hspi2, GPIOA, GPIO_PIN_4);
+                     
+                       while (1) {
+                         get_pressure_temperature(&sensor, OSR_4096);
+                         printf("Temp: %.2f°C\tPressure: %.2f mBar\n", sensor.temperature, sensor.pressure);
+                         HAL_Delay(1000);
+                       }
+                     }
 
 ## Configuration Options
 Oversampling Rates
-Enum	    Conversion  Time	Resolution
-OSR_256	  0.6 ms	    Low
-OSR_4096	9.1 ms	    Ultra High
-get_pressure_temperature(&sensor, OSR_2048); // Balance speed/accuracy
+Enum	   | Conversion | Time	Resolution
+OSR_256	|  0.6 ms	 |   Low
+OSR_4096	|  9.1 ms	 |   Ultra High
+      ```c
+      
+         get_pressure_temperature(&sensor, OSR_2048); // Balance speed/accuracy
 
 ## Troubleshooting
 Garbage Values:
